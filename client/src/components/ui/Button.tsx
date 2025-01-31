@@ -20,7 +20,7 @@ const Button: FC<ButtonProps> = ({
       variantStyles = 'bg-blue-600 hover:bg-blue-700';
       break;
     case 'neutral':
-      variantStyles = 'text-slate-800 bg-slate-200 hover:bg-slate-300';
+      variantStyles = 'text-slate-700 bg-slate-200 hover:bg-slate-300';
       break;
     default:
       variantStyles = '';
