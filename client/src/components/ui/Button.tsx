@@ -8,16 +8,26 @@ const Button: FC<ButtonProps> = ({
   ...props
 }) => {
   const baseStyles =
-    'cursor-pointer px-4 py-2 rounded-lg text-white font-medium text-base sm:text-lg md:text-xl transition-all duration-200 active:scale-95';
+    'cursor-pointer px-4 py-2 rounded-lg font-medium text-base sm:text-lg md:text-xl transition-all duration-200 active:scale-95';
 
   let variantStyles = '';
 
   switch (variant) {
     case 'primary':
-      variantStyles = 'bg-blue-600 hover:bg-blue-700';
+      variantStyles = 'text-white bg-blue-600 hover:bg-blue-700';
       break;
     case 'neutral':
-      variantStyles = 'text-gray-700 bg-slate-200 hover:bg-slate-300';
+      variantStyles = 'text-slate-700 bg-slate-200 hover:bg-slate-300';
+      break;
+    case 'primary-outline':
+      variantStyles =
+        'underline font-normal text-blue-600 bg-white hover:scale-95';
+      break;
+    case 'danger':
+      break;
+    case 'danger-outline':
+      variantStyles =
+        'underline font-normal text-red-600 bg-white hover:scale-95';
       break;
     default:
       variantStyles = '';
