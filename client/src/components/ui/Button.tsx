@@ -1,8 +1,5 @@
-import {ButtonHTMLAttributes, FC} from 'react';
-
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'neutral';
-}
+import {FC} from 'react';
+import {ButtonProps} from '../../types/components/ui/button';
 
 const Button: FC<ButtonProps> = ({
   variant = 'primary',
@@ -20,7 +17,7 @@ const Button: FC<ButtonProps> = ({
       variantStyles = 'bg-blue-600 hover:bg-blue-700';
       break;
     case 'neutral':
-      variantStyles = 'text-slate-700 bg-slate-200 hover:bg-slate-300';
+      variantStyles = 'text-gray-700 bg-slate-200 hover:bg-slate-300';
       break;
     default:
       variantStyles = '';
