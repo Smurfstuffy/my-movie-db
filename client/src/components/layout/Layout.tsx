@@ -3,6 +3,7 @@ import Sidebar from './Sidebar';
 import Button from '../ui/Button';
 import Modal from '../common/Modal';
 import {useState, useCallback} from 'react';
+import Form from '../common/Form';
 
 const Layout = () => {
   const [open, setOpen] = useState(false);
@@ -23,7 +24,7 @@ const Layout = () => {
       <main className="bg-white rounded-lg p-4">
         <Outlet />
         <Modal open={open} onClose={handleClose}>
-          Hello from modal
+          <Form handleClose={handleClose} />
         </Modal>
       </main>
       <aside className="hidden xl:flex xl:flex-col xl:gap-y-4">

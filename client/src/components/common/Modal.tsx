@@ -11,12 +11,13 @@ const Modal: FC<ModalProps> = ({open, onClose, children}) => {
     >
       <div
         onClick={e => e.stopPropagation()}
-        className={`bg-white rounded-lg shadow p-4 transition-all
-        ${open ? 'scale-100 opacity-100' : 'scale-125 opacity-0'}`}
+        className={`bg-white rounded-lg shadow px-4 pt-12 pb-4 transition-all
+        ${open ? 'scale-100 opacity-100' : 'scale-125 opacity-0'}
+        max-h-[90dvh] overflow-y-auto min-w-[50dvw]`}
       >
         <Button
           variant="neutral"
-          className="absolute top-2 right-2 p-1"
+          className="absolute top-1 right-1 bg-white hover:bg-slate-200 p-0"
           onClick={onClose}
         >
           x
