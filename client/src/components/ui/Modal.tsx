@@ -1,6 +1,6 @@
 import {FC} from 'react';
 import Button from '../ui/Button';
-import {ModalProps} from '../../types/components/common/modal';
+import {ModalProps} from '../../types/components/ui/modal';
 
 const Modal: FC<ModalProps> = ({open, onClose, children}) => {
   return (

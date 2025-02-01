@@ -1,7 +1,7 @@
 import {Outlet} from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Button from '../ui/Button';
-import Modal from '../common/Modal';
+import Modal from '../ui/Modal';
 import {useState, useCallback} from 'react';
 import Form from '../common/Form';
 
@@ -21,7 +21,7 @@ const Layout = () => {
       <aside>
         <Sidebar handleOpen={handleOpen} />
       </aside>
-      <main className="bg-white rounded-lg p-4">
+      <main>
         <Outlet />
         <Modal open={open} onClose={handleClose}>
           <Form handleClose={handleClose} />

@@ -31,6 +31,10 @@ export const movieApi = createApi({
             ]
           : [{type: 'Movies', id: 'LIST'}],
     }),
+    getMovie: build.query<Movie, string>({
+      query: id => `movies/${id}`,
+      providesTags: (result, error, id) => [{type: 'Movies', id}],
+    }),
     getFavouriteMovies: build.query<MoviesResponse, MoviesArguments>({
       query: ({page, limit}) => {
         const params = new URLSearchParams();
@@ -71,6 +75,7 @@ export const movieApi = createApi({
 
 export const {
   useGetMoviesQuery,
+  useGetMovieQuery,
   useGetFavouriteMoviesQuery,
   useAddMovieMutation,
 } = movieApi;
