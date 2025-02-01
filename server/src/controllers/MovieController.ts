@@ -4,8 +4,49 @@ import Movie from '../models/Movie';
 class MovieController {
   getMovies = async (req: express.Request, res: express.Response) => {
     try {
-      const movies = await Movie.find();
-      return res.status(200).json({data: movies});
+      const {page = '1', limit = '10'} = req.query;
+
+      const pageNumber = Math.max(1, parseInt(page as string, 10));
+      const limitNumber = Math.max(1, parseInt(limit as string, 10));
+
+      const movies = await Movie.find()
+        .skip((pageNumber - 1) * limitNumber)
+        .limit(limitNumber);
+
+      const totalMovies = await Movie.countDocuments();
+
+      return res.status(200).json({
+        data: movies,
+        totalPages: Math.ceil(totalMovies / limitNumber),
+        currentPage: pageNumber,
+        totalMovies,
+      });
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Internal server error';
+      return res.status(500).json({message: errorMessage});
+    }
+  };
+
+  getFavouriteMovies = async (req: express.Request, res: express.Response) => {
+    try {
+      const {page = '1', limit = '10'} = req.query;
+
+      const pageNumber = Math.max(1, parseInt(page as string, 10));
+      const limitNumber = Math.max(1, parseInt(limit as string, 10));
+
+      const movies = await Movie.find({isFavourite: true})
+        .skip((pageNumber - 1) * limitNumber)
+        .limit(limitNumber);
+
+      const totalMovies = await Movie.countDocuments({isFavourite: true});
+
+      return res.status(200).json({
+        data: movies,
+        totalPages: Math.ceil(totalMovies / limitNumber),
+        currentPage: pageNumber,
+        totalMovies,
+      });
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Internal server error';

@@ -1,45 +1,21 @@
 import {useState, useCallback, FC} from 'react';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import Button from '../ui/Button';
-import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {FormProps} from '../../types/components/common/form';
-
-const schema = z.object({
-  title: z.string().nonempty('Title is required'),
-  overview: z.string().optional(),
-  posterUrl: z
-    .string()
-    .nonempty('Poster URL is required')
-    .url({message: 'Invalid url'}),
-  genre: z
-    .array(z.string().nonempty('Genre is required'))
-    .min(1, 'At least one genre is required'),
-  actor: z
-    .array(z.string().nonempty('Actor is required'))
-    .min(1, 'At least one actor is required'),
-  director: z.string().nonempty('Director is required'),
-  releaseDate: z
-    .string()
-    .nonempty('Release date is required')
-    .transform(val => new Date(val)),
-  averageVote: z
-    .string()
-    .nonempty('Average vote is required')
-    .transform(val => parseFloat(val))
-    .refine(val => val >= 0 && val <= 10, {
-      message: 'Average vote must be between 0 and 10',
-    }),
-});
-
-type FormFields = z.infer<typeof schema>;
+import {schema, FormFields} from '../../types/components/common/form';
+import {useAddMovieMutation} from '../../redux/movieApi';
 
 const Form: FC<FormProps> = ({handleClose}) => {
+  const [addMovie, {isLoading}] = useAddMovieMutation();
+
   const [genres, setGenres] = useState<string[]>(['']);
   const [actors, setActors] = useState<string[]>(['']);
+
   const {
     register,
     handleSubmit,
+    setError,
     formState: {errors, isSubmitting},
   } = useForm<FormFields>({
     resolver: zodResolver(schema),
@@ -61,9 +37,15 @@ const Form: FC<FormProps> = ({handleClose}) => {
     setActors(prev => prev.filter((_, i) => i !== index));
   }, []);
 
-  const onSubmit: SubmitHandler<FormFields> = data => {
-    console.log(data);
-    handleClose();
+  const onSubmit: SubmitHandler<FormFields> = async data => {
+    try {
+      await addMovie(data).unwrap();
+      handleClose();
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : 'Failed to add a movie';
+      setError('root', {message: errorMessage});
+    }
   };
 
   return (
@@ -175,7 +157,7 @@ const Form: FC<FormProps> = ({handleClose}) => {
       )}
 
       <input
-        {...register('averageVote')}
+        {...register('voteAverage')}
         type="number"
         placeholder="Average Vote"
         className="input mt-2 sm:mt-4"
@@ -183,18 +165,19 @@ const Form: FC<FormProps> = ({handleClose}) => {
         min={0}
         max={10}
       />
-      {errors.averageVote && (
-        <span className="error">{errors.averageVote.message}</span>
+      {errors.voteAverage && (
+        <span className="error">{errors.voteAverage.message}</span>
       )}
 
       <Button
         variant="primary"
         type="submit"
-        disabled={isSubmitting}
+        disabled={isSubmitting || isLoading}
         className="mt-2 sm:mt-4"
       >
-        Add New Movie
+        {isLoading ? 'Adding...' : 'Add New Movie'}
       </Button>
+      {errors.root && <span className="error">{errors.root.message}</span>}
     </form>
   );
 };
