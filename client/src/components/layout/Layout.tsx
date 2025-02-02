@@ -4,6 +4,7 @@ import Button from '../ui/Button';
 import Modal from '../ui/Modal';
 import {useState, useCallback} from 'react';
 import Form from '../common/Form';
+import SearchBar from '../common/SearchBar';
 
 const Layout = () => {
   const [open, setOpen] = useState(false);
@@ -28,7 +29,7 @@ const Layout = () => {
         </Modal>
       </main>
       <aside className="hidden xl:flex xl:flex-col xl:gap-y-4 xl:sticky xl:top-0 xl:self-start">
-        <Button variant="neutral">Search</Button>
+        <SearchBar />
         <Button onClick={handleOpen}>Add Movie</Button>
       </aside>
     </div>

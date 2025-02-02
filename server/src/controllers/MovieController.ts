@@ -4,16 +4,21 @@ import Movie from '../models/Movie';
 class MovieController {
   getMovies = async (req: express.Request, res: express.Response) => {
     try {
-      const {page = '1', limit = '10'} = req.query;
+      const {page = '1', limit = '10', search = ''} = req.query;
 
       const pageNumber = Math.max(1, parseInt(page as string, 10));
       const limitNumber = Math.max(1, parseInt(limit as string, 10));
 
-      const movies = await Movie.find()
+      const query: Record<string, unknown> = {};
+      if (search) {
+        query.title = {$regex: search, $options: 'i'};
+      }
+
+      const movies = await Movie.find(query)
         .skip((pageNumber - 1) * limitNumber)
         .limit(limitNumber);
 
-      const totalMovies = await Movie.countDocuments();
+      const totalMovies = await Movie.countDocuments(query);
 
       return res.status(200).json({
         data: movies,

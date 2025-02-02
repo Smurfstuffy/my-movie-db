@@ -7,7 +7,9 @@ import Pagination from '../components/common/Pagination';
 const HomePage = () => {
   const [searchParams] = useSearchParams();
   const page = parseInt(searchParams.get('page') || '1', 10);
-  const {data, error, isLoading} = useGetMoviesQuery({page});
+  const search = searchParams.get('search') || '';
+
+  const {data, error, isLoading} = useGetMoviesQuery({page, search});
 
   if (isLoading) return <SkeletonCardList />;
 
@@ -21,7 +23,9 @@ const HomePage = () => {
   return (
     <div className="flex flex-col">
       <CardList movies={data?.data || []} />
-      <Pagination currentPage={page} totalPages={data?.totalPages || 1} />
+      {data && data?.totalPages > 1 && (
+        <Pagination currentPage={page} totalPages={data.totalPages || 1} />
+      )}
     </div>
   );
 };
