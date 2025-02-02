@@ -21,4 +21,5 @@ export interface MoviesResponse {
 export interface MoviesArguments {
   page?: number;
   limit?: number;
+  search?: string;
 }

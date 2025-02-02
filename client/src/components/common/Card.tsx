@@ -47,13 +47,13 @@ const Card: FC<CardProps> = ({
         <img src={posterUrl} alt={title} className="rounded-l-lg" />
       </div>
       <div className="flex flex-col">
-        <h1 className="text-slate-800 font-bold text-base sm:text-xl md:text-2xl md:mt-1 lg:mt-2 xl:mt-4 line-clamp-2">
+        <h1 className="text-slate-800 font-bold text-base sm:text-xl md:text-2xl md:mt-1 lg:mt-2 xl:mt-4 line-clamp-1 lg:line-clamp-2">
           {title}
         </h1>
         <span className="font-medium text-sm sm:text-base md:text-lg text-slate-600">
           {formattedDate}
         </span>
-        <span className="font-normal text-sm text-slate-700 line-clamp-2 sm:line-clamp-3 md:line-clamp-4 lg:line-clamp-6">
+        <span className="font-normal text-sm text-slate-700 line-clamp-2 sm:line-clamp-3 lg:line-clamp-4">
           {overview}
         </span>
         <div className="flex text-yellow-500 mt-auto md:mb-1 lg:mb-2 xl:mb-4">
