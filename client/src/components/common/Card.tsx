@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import Button from '../ui/Button';
 import {CardProps} from '../../types/components/common/card';
 import Trash from '../icons/Trash';
-import Bookmark from '../icons/BookMark';
+import Bookmark from '../icons/Bookmark';
 import BookmarkSlash from '../icons/BookmarkSlash';
 import PencilSquare from '../icons/PencilSquare';
 import Star from '../icons/Star';
