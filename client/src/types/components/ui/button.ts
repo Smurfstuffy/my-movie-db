@@ -6,5 +6,6 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     | 'neutral'
     | 'primary-outline'
     | 'danger-outline'
-    | 'edit-outline';
+    | 'edit-outline'
+    | 'edit';
 }
