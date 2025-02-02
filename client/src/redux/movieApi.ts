@@ -32,7 +32,7 @@ export const movieApi = createApi({
             ]
           : [{type: 'Movies', id: 'LIST'}],
     }),
-    getMovie: build.query<Movie, string>({
+    getMovie: build.query<{data: Movie}, string>({
       query: id => `movies/${id}`,
       providesTags: (result, error, id) => [{type: 'Movies', id}],
     }),
