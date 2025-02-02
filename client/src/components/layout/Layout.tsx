@@ -18,7 +18,7 @@ const Layout = () => {
 
   return (
     <div className="grid sm:grid-cols-[1fr_3fr] xl:grid-cols-[1fr_3fr_1fr] gap-4 sm:py-4 px-4 md:px-12 lg:px-32 xl:px-40">
-      <aside>
+      <aside className="sm:sticky sm:top-0 sm:self-start">
         <Sidebar handleOpen={handleOpen} />
       </aside>
       <main>
@@ -27,7 +27,7 @@ const Layout = () => {
           <Form handleClose={handleClose} />
         </Modal>
       </main>
-      <aside className="hidden xl:flex xl:flex-col xl:gap-y-4">
+      <aside className="hidden xl:flex xl:flex-col xl:gap-y-4 xl:sticky xl:top-0 xl:self-start">
         <Button variant="neutral">Search</Button>
         <Button onClick={handleOpen}>Add Movie</Button>
       </aside>

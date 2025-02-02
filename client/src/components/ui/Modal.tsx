@@ -1,6 +1,7 @@
 import {FC} from 'react';
 import Button from '../ui/Button';
 import {ModalProps} from '../../types/components/ui/modal';
+import Close from '../icons/Close';
 
 const Modal: FC<ModalProps> = ({open, onClose, children}) => {
   return (
@@ -17,10 +18,10 @@ const Modal: FC<ModalProps> = ({open, onClose, children}) => {
       >
         <Button
           variant="neutral"
-          className="absolute top-1 right-1 bg-white hover:bg-slate-200 p-0"
+          className="absolute top-1 right-1 bg-white hover:bg-white hover:scale-95 p-0"
           onClick={onClose}
         >
-          x
+          <Close size="size-5 sm:size-6 lg:size-7" />
         </Button>
         {children}
       </div>
