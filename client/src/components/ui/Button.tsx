@@ -23,7 +23,9 @@ const Button: FC<ButtonProps> = ({
       variantStyles =
         'underline font-normal text-blue-600 bg-white hover:scale-95';
       break;
-    case 'danger':
+    case 'edit-outline':
+      variantStyles =
+        'underline font-normal text-yellow-500 bg-white hover:scale-95';
       break;
     case 'danger-outline':
       variantStyles =

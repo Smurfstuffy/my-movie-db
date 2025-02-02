@@ -5,6 +5,7 @@ import {zodResolver} from '@hookform/resolvers/zod';
 import {FormProps} from '../../types/components/common/form';
 import {schema, FormFields} from '../../types/components/common/form';
 import {useAddMovieMutation} from '../../redux/movieApi';
+import Trash from '../icons/Trash';
 
 const Form: FC<FormProps> = ({handleClose}) => {
   const [addMovie, {isLoading}] = useAddMovieMutation();
@@ -93,7 +94,7 @@ const Form: FC<FormProps> = ({handleClose}) => {
                   variant="danger-outline"
                   onClick={() => handleRemoveGenre(index)}
                 >
-                  Remove
+                  <Trash size="size-5 sm:size-6 lg:size-7" />
                 </Button>
               )}
             </div>
@@ -122,7 +123,7 @@ const Form: FC<FormProps> = ({handleClose}) => {
                   variant="danger-outline"
                   onClick={() => handleRemoveActor(index)}
                 >
-                  Remove
+                  <Trash size="size-5 sm:size-6 lg:size-7" />
                 </Button>
               )}
             </div>
