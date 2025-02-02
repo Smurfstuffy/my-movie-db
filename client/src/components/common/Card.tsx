@@ -1,4 +1,4 @@
-import {FC} from 'react';
+import {FC, memo} from 'react';
 import {useNavigate} from 'react-router-dom';
 import Button from '../ui/Button';
 import {CardProps} from '../../types/components/common/card';
@@ -23,7 +23,10 @@ const Card: FC<CardProps> = ({
     day: '2-digit',
   });
 
+  posterUrl = posterUrl.replace('original', 'w500');
+
   const navigate = useNavigate();
+  console.log(`render ${_id}`);
 
   return (
     <div
@@ -40,7 +43,9 @@ const Card: FC<CardProps> = ({
           <Bookmark size="size-5 sm:size-6 lg:size-7" />
         )}
       </Button>
-      <img src={posterUrl} alt={title} className="rounded-l-lg" />
+      <div className="bg-white">
+        <img src={posterUrl} alt={title} className="rounded-l-lg" />
+      </div>
       <div className="flex flex-col">
         <h1 className="text-slate-800 font-bold text-base sm:text-xl md:text-2xl md:mt-1 lg:mt-2 xl:mt-4 line-clamp-2">
           {title}
@@ -71,4 +76,4 @@ const Card: FC<CardProps> = ({
   );
 };
 
-export default Card;
+export default memo(Card);
