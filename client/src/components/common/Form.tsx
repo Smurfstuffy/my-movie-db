@@ -1,26 +1,41 @@
-import {useState, useCallback, FC} from 'react';
+import {useState, useCallback, FC, useEffect} from 'react';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import Button from '../ui/Button';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {FormProps} from '../../types/components/common/form';
 import {schema, FormFields} from '../../types/components/common/form';
-import {useAddMovieMutation} from '../../redux/movieApi';
+import {
+  useAddMovieMutation,
+  useUpdateMovieMutation,
+} from '../../redux/movieApi';
 import Trash from '../icons/Trash';
 
-const Form: FC<FormProps> = ({handleClose}) => {
-  const [addMovie, {isLoading}] = useAddMovieMutation();
+const Form: FC<FormProps> = ({handleClose, movie}) => {
+  const [addMovie] = useAddMovieMutation();
+  const [updateMovie] = useUpdateMovieMutation();
 
-  const [genres, setGenres] = useState<string[]>(['']);
-  const [actors, setActors] = useState<string[]>(['']);
+  const [genres, setGenres] = useState<string[]>(movie?.genre || ['']);
+  const [actors, setActors] = useState<string[]>(movie?.actors || ['']);
 
   const {
     register,
     handleSubmit,
     setError,
+    setValue,
     formState: {errors, isSubmitting},
   } = useForm<FormFields>({
+    defaultValues: movie ? {...movie, actor: movie.actors} : undefined,
     resolver: zodResolver(schema),
   });
+
+  useEffect(() => {
+    genres.forEach((genre, index) => {
+      setValue(`genre.${index}`, genre);
+    });
+    actors.forEach((actor, index) => {
+      setValue(`actor.${index}`, actor);
+    });
+  }, [genres, actors, setValue]);
 
   const handleAddGenre = useCallback(() => {
     setGenres(prev => [...prev, '']);
@@ -39,13 +54,28 @@ const Form: FC<FormProps> = ({handleClose}) => {
   }, []);
 
   const onSubmit: SubmitHandler<FormFields> = async data => {
-    try {
-      await addMovie(data).unwrap();
-      handleClose();
-    } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : 'Failed to add a movie';
-      setError('root', {message: errorMessage});
+    if (movie) {
+      try {
+        await updateMovie({
+          ...data,
+          _id: movie._id,
+          actors: data.actor,
+        }).unwrap();
+        handleClose();
+      } catch (err) {
+        const errorMessage =
+          err instanceof Error ? err.message : 'Failed to update a movie';
+        setError('root', {message: errorMessage});
+      }
+    } else {
+      try {
+        await addMovie({...data, actors: data.actor}).unwrap();
+        handleClose();
+      } catch (err) {
+        const errorMessage =
+          err instanceof Error ? err.message : 'Failed to add a movie';
+        setError('root', {message: errorMessage});
+      }
     }
   };
 
@@ -91,6 +121,7 @@ const Form: FC<FormProps> = ({handleClose}) => {
               />
               {genres.length > 1 && (
                 <Button
+                  type="button"
                   variant="danger-outline"
                   onClick={() => handleRemoveGenre(index)}
                 >
@@ -103,7 +134,11 @@ const Form: FC<FormProps> = ({handleClose}) => {
             )}
           </div>
         ))}
-        <Button variant="primary-outline" onClick={handleAddGenre}>
+        <Button
+          type="button"
+          variant="primary-outline"
+          onClick={handleAddGenre}
+        >
           Add Genre
         </Button>
       </div>
@@ -120,6 +155,7 @@ const Form: FC<FormProps> = ({handleClose}) => {
               />
               {actors.length > 1 && (
                 <Button
+                  type="button"
                   variant="danger-outline"
                   onClick={() => handleRemoveActor(index)}
                 >
@@ -132,7 +168,11 @@ const Form: FC<FormProps> = ({handleClose}) => {
             )}
           </div>
         ))}
-        <Button variant="primary-outline" onClick={handleAddActor}>
+        <Button
+          type="button"
+          variant="primary-outline"
+          onClick={handleAddActor}
+        >
           Add Actor
         </Button>
       </div>
@@ -162,7 +202,7 @@ const Form: FC<FormProps> = ({handleClose}) => {
         type="number"
         placeholder="Average Vote"
         className="input mt-2 sm:mt-4"
-        step={1}
+        step={0.1}
         min={0}
         max={10}
       />
@@ -171,12 +211,18 @@ const Form: FC<FormProps> = ({handleClose}) => {
       )}
 
       <Button
-        variant="primary"
+        variant={movie ? 'edit' : 'primary'}
         type="submit"
-        disabled={isSubmitting || isLoading}
+        disabled={isSubmitting}
         className="mt-2 sm:mt-4"
       >
-        {isLoading ? 'Adding...' : 'Add New Movie'}
+        {isSubmitting
+          ? movie
+            ? 'Updating...'
+            : 'Adding...'
+          : movie
+            ? 'Update Movie'
+            : 'Add New Movie'}
       </Button>
       {errors.root && <span className="error">{errors.root.message}</span>}
     </form>

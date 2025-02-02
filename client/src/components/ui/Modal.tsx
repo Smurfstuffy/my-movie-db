@@ -2,9 +2,12 @@ import {FC} from 'react';
 import Button from '../ui/Button';
 import {ModalProps} from '../../types/components/ui/modal';
 import Close from '../icons/Close';
+import ReactDOM from 'react-dom';
 
 const Modal: FC<ModalProps> = ({open, onClose, children}) => {
-  return (
+  if (!open) return null;
+
+  return ReactDOM.createPortal(
     <div
       onClick={onClose}
       className={`fixed inset-0 z-50 flex justify-center items-center
@@ -25,7 +28,8 @@ const Modal: FC<ModalProps> = ({open, onClose, children}) => {
         </Button>
         {children}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 };
 

@@ -71,6 +71,35 @@ export const movieApi = createApi({
       }),
       invalidatesTags: [{type: 'Movies', id: 'LIST'}],
     }),
+    deleteMovie: build.mutation<string, string>({
+      query(id) {
+        return {
+          url: `movies/${id}`,
+          method: 'DELETE',
+        };
+      },
+      invalidatesTags: [{type: 'Movies', id: 'LIST'}],
+    }),
+    toggleFavourite: build.mutation<Movie, string>({
+      query(id) {
+        return {
+          url: `movies/${id}/toggle-favourite`,
+          method: 'PUT',
+        };
+      },
+      invalidatesTags: [{type: 'Movies', id: 'LIST'}],
+    }),
+    updateMovie: build.mutation<Movie, Partial<Movie>>({
+      query(data) {
+        const {_id, ...body} = data;
+        return {
+          url: `movies/${_id}`,
+          method: 'PUT',
+          body,
+        };
+      },
+      invalidatesTags: [{type: 'Movies', id: 'LIST'}],
+    }),
   }),
 });
 
@@ -79,4 +108,7 @@ export const {
   useGetMovieQuery,
   useGetFavouriteMoviesQuery,
   useAddMovieMutation,
+  useDeleteMovieMutation,
+  useToggleFavouriteMutation,
+  useUpdateMovieMutation,
 } = movieApi;

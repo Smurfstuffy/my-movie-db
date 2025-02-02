@@ -13,7 +13,10 @@ const CardList: FC<CardListProps> = ({movies}) => {
             title={movie.title}
             releaseDate={movie.releaseDate}
             overview={movie.overview}
+            genre={movie.genre}
             posterUrl={movie.posterUrl}
+            actors={movie.actors}
+            director={movie.director}
             isFavourite={movie.isFavourite}
             voteAverage={movie.voteAverage}
           />

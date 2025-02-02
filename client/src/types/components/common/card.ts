@@ -1,6 +1,6 @@
 import {Movie} from '../../redux';
 
-export type CardProps = Omit<Movie, 'genre' | 'actors' | 'director'>;
+export type CardProps = Movie;
 
 export interface CardListProps {
   movies: CardProps[];

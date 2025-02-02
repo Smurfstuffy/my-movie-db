@@ -1,7 +1,9 @@
 import {z} from 'zod';
+import {Movie} from '../../redux';
 
 export interface FormProps {
   handleClose: () => void;
+  movie?: Movie;
 }
 
 export const schema = z.object({
@@ -23,9 +25,10 @@ export const schema = z.object({
     .nonempty('Release date is required')
     .transform(val => new Date(val)),
   voteAverage: z
-    .string()
-    .nonempty('Average vote is required')
-    .transform(val => parseFloat(val))
+    .union([z.string().nonempty('Average vote is required'), z.number()])
+    .transform(val =>
+      typeof val === 'string' ? parseFloat(val.replace(',', '.')) : val,
+    )
     .refine(val => val >= 0 && val <= 10, {
       message: 'Average vote must be between 0 and 10',
     }),
