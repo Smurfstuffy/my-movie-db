@@ -8,11 +8,27 @@ export const movieApi = createApi({
   baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:4000/api/'}),
   endpoints: build => ({
     getMovies: build.query<MoviesResponse, MoviesArguments>({
-      query: ({page, limit, search}) => {
+      query: ({
+        page,
+        limit,
+        search,
+        genres,
+        minRating,
+        maxRating,
+        minReleaseYear,
+        maxReleaseYear,
+      }) => {
         const params = new URLSearchParams();
         if (page) params.append('page', page.toString());
         if (limit) params.append('limit', limit.toString());
         if (search) params.append('search', search);
+        if (genres) params.append('genres', genres.join(','));
+        if (minRating) params.append('minRating', minRating.toString());
+        if (maxRating) params.append('maxRating', maxRating.toString());
+        if (minReleaseYear)
+          params.append('minReleaseYear', minReleaseYear.toString());
+        if (maxReleaseYear)
+          params.append('maxReleaseYear', maxReleaseYear.toString());
         return `movies?${params.toString()}`;
       },
       transformResponse: (response: MoviesResponse) => {

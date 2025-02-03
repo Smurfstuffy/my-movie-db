@@ -4,14 +4,53 @@ import Movie from '../models/Movie';
 class MovieController {
   getMovies = async (req: express.Request, res: express.Response) => {
     try {
-      const {page = '1', limit = '10', search = ''} = req.query;
+      const {
+        page = '1',
+        limit = '10',
+        search = '',
+        genres,
+        minRating,
+        maxRating,
+        minReleaseYear,
+        maxReleaseYear,
+      } = req.query;
 
       const pageNumber = Math.max(1, parseInt(page as string, 10));
       const limitNumber = Math.max(1, parseInt(limit as string, 10));
 
       const query: Record<string, unknown> = {};
+
       if (search) {
         query.title = {$regex: search, $options: 'i'};
+      }
+
+      if (genres) {
+        const genresArray = (genres as string).split(',');
+        query.genre = {$in: genresArray};
+      }
+
+      if (minRating || maxRating) {
+        query.voteAverage = {};
+        if (minRating)
+          (query.voteAverage as Record<string, unknown>).$gte = parseFloat(
+            minRating as string,
+          );
+        if (maxRating)
+          (query.voteAverage as Record<string, unknown>).$lte = parseFloat(
+            maxRating as string,
+          );
+      }
+
+      if (minReleaseYear || maxReleaseYear) {
+        query.releaseDate = {};
+        if (minReleaseYear)
+          (query.releaseDate as Record<string, unknown>).$gte = new Date(
+            `${minReleaseYear}-01-01`,
+          );
+        if (maxReleaseYear)
+          (query.releaseDate as Record<string, unknown>).$lte = new Date(
+            `${maxReleaseYear}-12-31`,
+          );
       }
 
       const movies = await Movie.find(query)

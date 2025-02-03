@@ -22,4 +22,9 @@ export interface MoviesArguments {
   page?: number;
   limit?: number;
   search?: string;
+  genres?: string[];
+  minRating?: number;
+  maxRating?: number;
+  minReleaseYear?: number;
+  maxReleaseYear?: number;
 }
