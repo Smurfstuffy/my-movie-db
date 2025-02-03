@@ -5,6 +5,7 @@ client/node_modules/
 
 # Environment variables
 server/.env
+server/.env.production
 
 # Build files
 client/dist/
@@ -35,3 +36,5 @@ client/*.sln
 client/*.sw?
 
 .DS_Store
+
+server/dist

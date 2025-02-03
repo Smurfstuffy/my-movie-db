@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon"
+    "build": "tsc",
+    "start": "NODE_ENV=production node dist/index.js",
+    "dev": "NODE_ENV=development nodemon index.ts"
   },
   "keywords": [],
   "author": "",

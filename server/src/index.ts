@@ -3,14 +3,22 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import router from './routes';
+import path from 'path';
 
-dotenv.config();
+const envFile =
+  process.env.NODE_ENV === 'production' ? '.env.production' : '.env';
+
+dotenv.config({path: path.resolve(__dirname, `../${envFile}`)});
+
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-const MONGO_URL =
-  process.env.MONGO_URL ?? 'mongodb://127.0.0.1:27017/my_movie_db';
+const MONGO_URL = process.env.MONGO_URL;
+if (!MONGO_URL) {
+  throw new Error('MONGO_URL is not defined in .env file');
+}
+
 mongoose
   .connect(MONGO_URL, {
     dbName: 'my_movie_db',
@@ -24,7 +32,7 @@ mongoose
 
 app.use('/', router);
 
-const PORT = process.env.PORT ?? '4000';
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
