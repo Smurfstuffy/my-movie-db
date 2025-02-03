@@ -5,7 +5,7 @@ import {MoviesResponse, MoviesArguments, Movie} from '../types/redux';
 export const movieApi = createApi({
   reducerPath: 'movieApi',
   tagTypes: ['Movies'],
-  baseQuery: fetchBaseQuery({baseUrl: 'http://localhost:4000/api/'}),
+  baseQuery: fetchBaseQuery({baseUrl: import.meta.env.VITE_API_URL}),
   endpoints: build => ({
     getMovies: build.query<MoviesResponse, MoviesArguments>({
       query: ({
@@ -50,7 +50,7 @@ export const movieApi = createApi({
     }),
     getMovie: build.query<{data: Movie}, string>({
       query: id => `movies/${id}`,
-      providesTags: (result, error, id) => [{type: 'Movies', id}],
+      providesTags: (_result, _error, id) => [{type: 'Movies', id}],
     }),
     getFavouriteMovies: build.query<MoviesResponse, MoviesArguments>({
       query: ({page, limit}) => {

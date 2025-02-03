@@ -7,6 +7,10 @@ client/node_modules/
 server/.env
 server/.env.production
 
+client/.env
+client/.env.development
+client/.env.production
+
 # Build files
 client/dist/
 
